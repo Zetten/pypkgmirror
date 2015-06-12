@@ -1,0 +1,65 @@
+#
+# This configuration file shows example pypkgmirror configuration for
+# debmirror, rsync, and aptly mirrors.
+#
+---
+basedir: /pkg
+keydir: /pkg/gpg
+logdir: /pkg/log
+noop: true
+loglevel: DEBUG
+debmirror_default_prefix: deb
+rsync_default_prefix: rpm
+aptly_default_prefix: aptly
+mirrors:
+  debmirror:
+    ubuntu:
+      method: http
+      host: ftp.hosteurope.de
+      root: /mirror/archive.ubuntu.com
+      exclude_sources: Yes
+      architectures:
+        - amd64
+      dists:
+        - precise
+        - precise-updates
+        - precise-backports
+        - precise-proposed
+        - precise-security
+        - trusty
+        - trusty-updates
+        - trusty-backports
+        - trusty-proposed
+        - trusty-security
+      di-dists:
+        - precise
+        - trusty
+      sections:
+        - main
+        - universe
+        - restricted
+        - multiverse
+        - main/debian-installer
+        - universe/debian-installer
+        - restricted/debian-installer
+        - main/dist-upgrader-all
+  rsync:
+    centos/6.6:
+      host: ftp.hosteurope.de
+      root: centos/6.6/
+      excludes:
+        - isos/
+        - i386/
+  aptly:
+    mariadb:
+      # Collect packages from three repos and publish them under a "mariadb" aggregate repository
+      locations:
+        mariadb-10_1: http://ftp.hosteurope.de/mirror/mariadb.org/repo/10.1/ubuntu
+        mariadb-10_0: http://ftp.hosteurope.de/mirror/mariadb.org/repo/10.0/ubuntu
+        mariadb-5_5: http://ftp.hosteurope.de/mirror/mariadb.org/repo/5.5/ubuntu
+      distribution: trusty
+      architectures:
+        - amd64
+      components:
+        - main
+
