@@ -16,11 +16,20 @@
 # along with pypkgmirror.  If not, see <http://www.gnu.org/licenses/>.
 """ Entry point and main function for pypkgmirror. """
 
-import os
+import errno
 import multiprocessing
+import os
 import subprocess
 
 from pypkgmirror.util import conf, log
+
+
+def mkdir(d):
+    try:
+        os.makedirs(d)
+    except OSError as exception:
+        if exception.errno != errno.EEXIST:
+            raise
 
 
 def main():
@@ -70,6 +79,9 @@ def start_sync(agent):
 
     outfile_path = "%s/%s.out" % (conf['logdir'], agent.name)
     errfile_path = "%s/%s.err" % (conf['logdir'], agent.name)
+
+    mkdir(os.path.dirname(outfile_path))
+    mkdir(agent.basedir)
 
     with open(outfile_path, 'w') as outfile, open(errfile_path, 'w') as errfile:
         for call in agent.get_calls():

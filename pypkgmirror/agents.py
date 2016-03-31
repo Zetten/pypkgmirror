@@ -23,7 +23,7 @@ from subprocess import check_output
 from pypkgmirror.util import conf
 
 
-class MirrorAgent(metaclass=ABCMeta):
+class MirrorAgent(object, metaclass=ABCMeta):
     """
     Abstract parent class for all Agents.
 
